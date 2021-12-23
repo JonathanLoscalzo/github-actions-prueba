@@ -98,14 +98,15 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `# Building CI Report: 
-              
-
+              body: `
+              # Building CI Report: 
               ## Linter
               <details>
                 <summary> Summary </summary>
               \`\`\`
-                 ${lint}
+
+              ${lint}
+              
               \`\`\`
               </details>
 
@@ -119,8 +120,7 @@ jobs:
               <details>
                 <summary> Summary </summary>
               \`\`\`
-
-                ${data}
+              ${data}
               \`\`\`
               </details>
 
@@ -129,11 +129,10 @@ jobs:
               
               <details>
                 <summary> Summary </summary>
-                \`\`\`
-                ${pytest}
-                \`\`\`
+              \`\`\`
+              ${pytest}
+              \`\`\`
               </details>
-
 
               `
             })
