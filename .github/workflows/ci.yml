@@ -154,10 +154,10 @@ jobs:
             })
       
       - name: Check coverage failures
-        if: job.steps.coverage.status == failure()
+        if: ${{ job.steps.coverage.status == failure() }}
         run: exit 1
       - name: Check tests failures
-        if: job.steps.tests.status == failure()
+        if: ${{ job.steps.tests.status == failure() }}
         run: exit 1  
   monitor:
     runs-on: ubuntu-latest 
