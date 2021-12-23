@@ -2,14 +2,13 @@
 name: Tests
 
 on:
-  push:
-    branches: 
-      - 'features/**'
+  # push:
+  #   branches: 
+  #     - 'features/**'
 
   pull_request:
     branches: 
     - main
-    - 'features/**'
 
 jobs:
   test:
