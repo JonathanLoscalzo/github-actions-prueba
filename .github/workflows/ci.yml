@@ -79,9 +79,6 @@ jobs:
           script: |
 
             const {PR} = process.env;
-
-            const io = require('@actions/io');
-
             const fs = require('fs')
             const data = fs.readFileSync('coverage.txt', 'utf8')
 
