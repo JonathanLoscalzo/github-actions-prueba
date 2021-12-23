@@ -40,14 +40,13 @@ jobs:
       - name: Test with pytest
         id: tests
         run: | 
-          pytest
+          pytest || true
           pytest --cov-report term-missing --cov=app tests/ > coverage-pytest.txt
         continue-on-error: true
 
       - name: Coverage
         id: coverage
         run:  | 
-          set +e
           coverage run --source=app -m pytest || true
           # --fail-under=80 
           coverage report --skip-covered > coverage.txt
