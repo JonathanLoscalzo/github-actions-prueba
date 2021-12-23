@@ -83,11 +83,12 @@ jobs:
         if: success() && steps.findPr.outputs.number
         env: 
           PR: ${{ steps.findPr.outputs.pr }}
+          BRANCH: ${{ github.head_ref }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
 
-            const {PR} = process.env;
+            const {PR, BRANCH} = process.env;
             const fs = require('fs')
             const data = fs.readFileSync('coverage.txt', 'utf8')
             const lint = fs.readFileSync('lint.txt', 'utf8')
@@ -101,6 +102,8 @@ jobs:
               repo: context.repo.repo,
               body: `
             # CI Report: 
+            ![example workflow](https://github.com/JonathanLoscalzo/github-actions-prueba/actions/workflows/ci.yml/badge.svg?branch=${BRANCH})
+
             ## Linter
             Linter errors: ${lint_count}
             <details>
@@ -139,6 +142,8 @@ jobs:
             \`\`\`
 
             </details>`
+
+
             })
       # - name: Check on tests failures
       #   if: job.steps.tests.status == failure()
