@@ -46,7 +46,7 @@ jobs:
         run: | 
           pytest || true
           pytest --cov-report term-missing --cov=app tests/ > coverage-pytest.txt
-        # continue-on-error: true
+        continue-on-error: true
 
       - name: Coverage
         id: coverage
@@ -109,7 +109,7 @@ jobs:
             # CI Report: 
             ![example workflow](https://github.com/JonathanLoscalzo/github-actions-prueba/actions/workflows/ci.yml/badge.svg?branch=${BRANCH})
 
-            ${FAILED}
+            Status: ${FAILED}
 
             ## Linter
             Linter errors: ${lint_count}
