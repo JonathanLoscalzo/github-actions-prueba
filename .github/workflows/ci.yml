@@ -47,8 +47,9 @@ jobs:
       - name: Coverage
         run:  | 
           coverage run --source=app -m pytest
-          coverage report --skip-covered > coverage.txt
+          coverage report --fail-under=80 --skip-covered > coverage.txt
           coverage-badge > coverage.svg
+          coverage json
 
           
 
@@ -90,7 +91,8 @@ jobs:
             const data = fs.readFileSync('coverage.txt', 'utf8')
             const lint = fs.readFileSync('lint.txt', 'utf8')
             const pytest = fs.readFileSync('coverage-pytest.txt', 'utf8')
-          
+            const coverage = require('coverage.json', 'utf8')
+
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -108,14 +110,28 @@ jobs:
 
 
               ## Coverage
-              \`\`\`
-              ${data}
-              \`\`\`
+              ### Summary
+                Covered Lines: ${coverage.covered_lines}/${coverage.num_statements} :eyes:
+                Percentage Covered: ${coverage.percent_covered} % :exclamation: 
+              ### Coverage lib
+              
+              <details>
+                <summary> Summary </summary>
+                \`\`\`
+                ${data}
+                \`\`\`
+              </details>
 
-              ### pytest
-              \`\`\`
-              ${pytest}
-              \`\`\`
+
+              ### Pytest-cov
+              
+              <details>
+                <summary> Summary </summary>
+                \`\`\`
+                ${pytest}
+                \`\`\`
+              </details>
+
 
               `
             })
