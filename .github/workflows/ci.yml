@@ -99,42 +99,40 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `
-              # Building CI Report: 
-              ## Linter
-              <details>
-                <summary> Summary </summary>
-              \`\`\`
+            # Building CI Report: 
+            ## Linter
+            <details>
+              <summary> Summary </summary>
+            \`\`\`
 
-              ${lint}
-              
-              \`\`\`
-              </details>
-
-
-              ## Coverage
-              ### Summary
-              Covered Lines: ${coverage.totals.covered_lines}/${coverage.totals.num_statements} :eyes:
-              Percentage Covered: ${coverage.totals.percent_covered} % :exclamation: 
-              ### Coverage lib
-              
-              <details>
-                <summary> Summary </summary>
-              \`\`\`
-              ${data}
-              \`\`\`
-              </details>
+            ${lint}
+            
+            \`\`\`
+            </details>
 
 
-              ### Pytest-cov
-              
-              <details>
-                <summary> Summary </summary>
-              \`\`\`
-              ${pytest}
-              \`\`\`
-              </details>
+            ## Coverage
+            ### Summary
+            Covered Lines: ${coverage.totals.covered_lines}/${coverage.totals.num_statements} :eyes:
+            Percentage Covered: ${coverage.totals.percent_covered} % :exclamation: 
+            ### Coverage lib
+            
+            <details>
+              <summary> Summary </summary>
+            \`\`\`
+            ${data}
+            \`\`\`
+            </details>
 
-              `
+
+            ### Pytest-cov
+            
+            <details>
+              <summary> Summary </summary>
+            \`\`\`
+            ${pytest}
+            \`\`\`
+            </details>`
             })
       # - name: Check on tests failures
       #   if: job.steps.tests.status == failure()
