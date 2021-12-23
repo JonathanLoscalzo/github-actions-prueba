@@ -36,7 +36,7 @@ jobs:
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           # flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 > lint.txt
-        
+          cat lint.txt | tail -n1 > lint-count.txt
       - name: Test with pytest
         id: tests
         run: | 
@@ -91,6 +91,7 @@ jobs:
             const fs = require('fs')
             const data = fs.readFileSync('coverage.txt', 'utf8')
             const lint = fs.readFileSync('lint.txt', 'utf8')
+            const lint_count = fs.readFileSync('lint-count.txt', 'utf8')
             const pytest = fs.readFileSync('coverage-pytest.txt', 'utf8')
             const coverage = JSON.parse(fs.readFileSync('coverage.json', 'utf8'))
 
@@ -99,15 +100,16 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `
-            # Building CI Report: 
+            # CI Report: 
             ## Linter
+            Linter errors: ${lint_count}
             <details>
-              <summary> Summary </summary>
-            \`\`\`
-
-            ${lint}
+            <summary> Summary </summary>
             
             \`\`\`
+            ${lint}
+            \`\`\`
+
             </details>
 
 
@@ -118,10 +120,12 @@ jobs:
             ### Coverage lib
             
             <details>
-              <summary> Summary </summary>
+            <summary> Summary </summary>
+            
             \`\`\`
             ${data}
             \`\`\`
+
             </details>
 
 
@@ -129,9 +133,11 @@ jobs:
             
             <details>
               <summary> Summary </summary>
+            
             \`\`\`
             ${pytest}
             \`\`\`
+
             </details>`
             })
       # - name: Check on tests failures
