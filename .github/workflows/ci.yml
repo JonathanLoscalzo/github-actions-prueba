@@ -12,11 +12,14 @@ on:
 
 jobs:
   test:
+    if: ${{github.event_name == "pull_request"}}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [3.9]
     steps:
+      - name: Event Name
+        run: echo ${{github.event_name }}
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
