@@ -32,10 +32,10 @@ jobs:
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          #flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      
+          # flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+          flake8 . --count --exit-zero --show-source --max-complexity=10 --max-line-length=127 > lint.txt
       - name: Test with pytest
         run: |
           pytest
@@ -81,20 +81,26 @@ jobs:
             const {PR} = process.env;
             const fs = require('fs')
             const data = fs.readFileSync('coverage.txt', 'utf8')
-
+            const lint = fs.readFileSync('lint.txt', 'utf8')
+            
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `## Building report (👋 PR: ${PR}): 
+              body: `## Building report (PR: ${PR}): 
               
 
               ## Linter
-
+              <details>
+                <summary></summary>
+                {{lint}}
+              </details>
 
 
               ## Coverage
+              \`\`\`
               ${data}
+              \`\`\`
               `
             })
         
