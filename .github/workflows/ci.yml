@@ -92,7 +92,7 @@ jobs:
             const data = fs.readFileSync('coverage.txt', 'utf8')
             const lint = fs.readFileSync('lint.txt', 'utf8')
             const pytest = fs.readFileSync('coverage-pytest.txt', 'utf8')
-            const coverage = require('./coverage.json')
+            const coverage = JSON.parse(fs.readFileSync('coverage.json', 'utf8'))
 
             github.issues.createComment({
               issue_number: context.issue.number,
