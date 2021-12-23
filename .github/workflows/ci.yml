@@ -46,10 +46,10 @@ jobs:
         with:
           name: code-coverage-report
           path: htmlcov
-      - name: Archive code coverage results
+      - name: Archive code coverage results 2 
         uses: actions/upload-artifact@v2
         with:
-          name: code-coverage-report
+          name: coverage-badge
           path: coverage.svg
       - name: Find Current Pull Request
         uses: jwalton/gh-find-current-pr@v1.2.1
