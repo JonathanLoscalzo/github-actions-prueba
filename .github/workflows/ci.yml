@@ -88,7 +88,7 @@ jobs:
         env: 
           PR: ${{ steps.findPr.outputs.pr }}
           BRANCH: ${{ github.head_ref }}
-          FAILED: ${{ job.steps.tests.status }}
+          FAILED: ${{ steps.tests.outcome }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -154,10 +154,10 @@ jobs:
             })
       
       - name: Check coverage failures
-        if: ${{ job.steps.coverage.status == failure() }}
+        if: ${{ steps.coverage.outcome != 'success' }}
         run: exit 1
       - name: Check tests failures
-        if: ${{ job.steps.tests.status == failure() }}
+        if: ${{ steps.tests.outcome != 'success' }}
         run: exit 1  
   monitor:
     runs-on: ubuntu-latest 
