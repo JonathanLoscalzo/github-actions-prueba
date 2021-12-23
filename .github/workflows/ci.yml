@@ -151,8 +151,11 @@ jobs:
 
 
             })
-      - name: Check on tests failures
-        if: job.steps.tests.status == failure() || job.steps.coverage.status == failure()
+      - name: Check tests failures
+        if: job.steps.tests.status == failure()
+        run: exit 1  
+      - name: Check coverage failures
+        if: job.steps.coverage.status == failure()
         run: exit 1  
   monitor:
     runs-on: ubuntu-latest 
