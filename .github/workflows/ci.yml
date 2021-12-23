@@ -84,7 +84,7 @@ jobs:
         env: 
           PR: ${{ steps.findPr.outputs.pr }}
           BRANCH: ${{ github.head_ref }}
-          FAILED: ${{ job.steps.tests.status == failure() }}
+          FAILED: ${{ job.steps.tests.status }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
