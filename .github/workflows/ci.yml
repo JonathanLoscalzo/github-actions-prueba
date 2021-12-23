@@ -39,7 +39,9 @@ jobs:
         
       - name: Test with pytest
         id: tests
-        run: pytest
+        run: | 
+          pytest
+          pytest --cov-report term-missing --cov=app tests/ > coverage-pytest.txt
         # continue-on-error: true
 
       - name: Coverage
@@ -47,6 +49,8 @@ jobs:
           coverage run --source=app -m pytest
           coverage report --skip-covered > coverage.txt
           coverage-badge > coverage.svg
+
+          
 
       # - name: Archive code coverage results
       #   uses: actions/upload-artifact@v2
@@ -85,25 +89,34 @@ jobs:
             const fs = require('fs')
             const data = fs.readFileSync('coverage.txt', 'utf8')
             const lint = fs.readFileSync('lint.txt', 'utf8')
-
+            const pytest = fs.readFileSync('coverage-pytest.txt', 'utf8')
+          
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `## Building report (PR: ${PR}): 
+              body: `# Building CI Report: 
               
 
-              ### Linter
+              ## Linter
               <details>
                 <summary> Summary </summary>
-                ${lint}
+                 \`\`\`
+                 ${lint}
+                  \`\`\`
               </details>
 
 
-              ### Coverage
+              ## Coverage
               \`\`\`
               ${data}
               \`\`\`
+
+              ### pytest
+              \`\`\`
+              ${pytest}
+              \`\`\`
+
               `
             })
       # - name: Check on tests failures
