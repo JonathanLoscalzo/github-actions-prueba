@@ -112,8 +112,8 @@ jobs:
 
               ## Coverage
               ### Summary
-                Covered Lines: ${coverage.covered_lines}/${coverage.num_statements} :eyes:
-                Percentage Covered: ${coverage.percent_covered} % :exclamation: 
+                Covered Lines: ${coverage.totals.covered_lines}/${coverage.totals.num_statements} :eyes:
+                Percentage Covered: ${coverage.totals.percent_covered} % :exclamation: 
               ### Coverage lib
               
               <details>
