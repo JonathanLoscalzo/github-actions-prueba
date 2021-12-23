@@ -63,12 +63,18 @@ jobs:
         env:
           PR: ${{ steps.findPr.outputs.pr }}
       - uses: actions/github-script@v3
+        env: 
+          DATA: ${{ steps.findPr.outputs.pr }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
+
+            const {DATA} = process.env;
+
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '👋 Thanks for reporting!'
+              body: '👋 Thanks for reporting! ${DATA}'
             })
+        
