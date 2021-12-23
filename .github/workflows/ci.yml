@@ -36,7 +36,7 @@ jobs:
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           # flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
           flake8 . --count --exit-zero --show-source --max-complexity=10 --max-line-length=127 > lint.txt
-
+        
       - name: Test with pytest
         id: tests
         run: pytest
@@ -66,8 +66,8 @@ jobs:
         with:
           # Can be "open", "closed", or "all".  Defaults to "open".
           state: open
-      This will echo "Your PR is 7", or be skipped if there is no current PR.
 
+        #This will echo "Your PR is 7", or be skipped if there is no current PR.
       - run: echo "Your PR is ${PR}"
         if: success() && steps.findPr.outputs.number
         env:
