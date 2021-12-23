@@ -40,12 +40,13 @@ jobs:
           # flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 > lint.txt
           cat lint.txt | tail -n1 > lint-count.txt
+      
       - name: Test with pytest
         id: tests
         run: | 
           pytest || true
           pytest --cov-report term-missing --cov=app tests/ > coverage-pytest.txt
-        continue-on-error: true
+        # continue-on-error: true
 
       - name: Coverage
         id: coverage
