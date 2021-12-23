@@ -45,14 +45,14 @@ jobs:
         continue-on-error: true
 
       - name: Coverage
+        id: coverage
         run:  | 
           coverage run --source=app -m pytest
           # --fail-under=80 
           coverage report --skip-covered > coverage.txt
           coverage-badge > coverage.svg
           coverage json
-
-          
+        continue-on-error: true
 
       # - name: Archive code coverage results
       #   uses: actions/upload-artifact@v2
@@ -84,11 +84,12 @@ jobs:
         env: 
           PR: ${{ steps.findPr.outputs.pr }}
           BRANCH: ${{ github.head_ref }}
+          FAILED: ${{ job.steps.tests.status == failure() }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
 
-            const {PR, BRANCH} = process.env;
+            const {PR, BRANCH, FAILED} = process.env;
             const fs = require('fs')
             const data = fs.readFileSync('coverage.txt', 'utf8')
             const lint = fs.readFileSync('lint.txt', 'utf8')
@@ -103,6 +104,8 @@ jobs:
               body: `
             # CI Report: 
             ![example workflow](https://github.com/JonathanLoscalzo/github-actions-prueba/actions/workflows/ci.yml/badge.svg?branch=${BRANCH})
+
+            ${FAILED}
 
             ## Linter
             Linter errors: ${lint_count}
@@ -146,6 +149,6 @@ jobs:
 
             })
       - name: Check on tests failures
-        if: job.steps.tests.status == failure()
+        if: job.steps.tests.status == failure() || job.steps.coverage.status == failure()
         run: exit 1  
         
