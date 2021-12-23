@@ -1,0 +1,15 @@
+./app/app.py:4:1: E302 expected 2 blank lines, found 1
+@app.route('/')
+^
+./app/app.py:6:1: W191 indentation contains tabs
+	return "Hello World!"
+^
+./app/app.py:8:1: E305 expected 2 blank lines after class or function definition, found 1
+if __name__ == '__main__':
+^
+./app/app.py:9:1: W191 indentation contains tabs
+	app.run(host='0.0.0.0')
+^
+./tests/test_common.py:4:18: W292 no newline at end of file
+    assert 1 == 1                 ^
+5
