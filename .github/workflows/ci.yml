@@ -2,6 +2,10 @@
 name: Tests
 
 on:
+  push:
+    branches: 
+      - 'features/**'
+
   pull_request:
     branches: 
     - main, 
