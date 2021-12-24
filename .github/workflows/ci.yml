@@ -151,6 +151,7 @@ jobs:
 
             ## Linter
             Linter Errors Counts: ${lint_count}${getIconByCondition(lint_count>0)}
+            
             <details>
             <summary> Summary </summary>
             
