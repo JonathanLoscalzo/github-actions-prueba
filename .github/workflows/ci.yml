@@ -33,7 +33,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8 pytest coverage coverage-badge pytest-cov
           #if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install -r app/requirements.txt; fi
+          pip install -r app/requirements.txt
       
       - name: Lint with flake8
         id: linter
