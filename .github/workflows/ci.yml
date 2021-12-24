@@ -150,7 +150,8 @@ jobs:
             COVERAGE_STATUS: ${COVERAGE_STATUS} ${getIconByStatus(COVERAGE_STATUS)}
 
             ## Linter
-            Linter Errors Counts: ${lint_count}${getIconByCondition(lint_count>0)}
+            
+            Linter Errors Counts: ${lint_count} ${getIconByCondition(lint_count==0)}
 
             <details>
             <summary> Summary </summary>
@@ -165,7 +166,7 @@ jobs:
             ## Coverage
             ### Summary
             Covered Lines: ${coverage.totals.covered_lines}/${coverage.totals.num_statements} :eyes:
-            Percentage Covered: ${coverage.totals.percent_covered} % ${getIconByCondition(coverage.totals.percent_covered < FAIL_UNDER)} 
+            Percentage Covered: ${coverage.totals.percent_covered} % ${getIconByCondition(coverage.totals.percent_covered >= FAIL_UNDER)} 
             ### Coverage lib
             
             <details>
