@@ -1,4 +1,7 @@
 ## Compose sample application
+
+![CI](https://github.com/JonathanLoscalzo/github-actions-prueba/actions/workflows/ci.yml/badge.svg?branch=main)
+
 ### Python/Flask application
 
 Project structure:
