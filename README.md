@@ -1,6 +1,6 @@
 ## Compose sample application
 
-![CI](https://github.com/JonathanLoscalzo/github-actions-prueba/actions/workflows/ci.yml/badge.svg?branch=main)
+![CI](https://github.com/JonathanLoscalzo/github-actions-prueba/actions/workflows/ci_push.yml/badge.svg?branch=main)
 
 ### Python/Flask application
 
