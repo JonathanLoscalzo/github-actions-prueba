@@ -142,7 +142,7 @@ jobs:
             COVERAGE_STATUS: ${COVERAGE_STATUS}
 
             ## Linter
-            Linter Errors Counts: ${lint_count} ${lint_count > 0 ? ":x:" : ""}
+            Linter Errors Counts: ${lint_count}${lint_count > 0 ? ":x:" : ""}
             <details>
             <summary> Summary </summary>
             
@@ -156,7 +156,7 @@ jobs:
             ## Coverage
             ### Summary
             Covered Lines: ${coverage.totals.covered_lines}/${coverage.totals.num_statements} :eyes:
-            Percentage Covered: ${coverage.totals.percent_covered} % ${coverage.totals.percent_covered < FAIL_UNDER ? "::" : ""} 
+            Percentage Covered: ${coverage.totals.percent_covered} %${coverage.totals.percent_covered < FAIL_UNDER ? ":x:" : ""} 
             ### Coverage lib
             
             <details>
