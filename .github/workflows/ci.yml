@@ -67,7 +67,6 @@ jobs:
           # --fail-under=80 
           coverage report --skip-covered --fail-under=$FAIL_UNDER > coverage.txt
           #coverage-badge > coverage.svg
-          coverage json
         continue-on-error: true
 
       - name: Generage Coverage JSON
@@ -150,9 +149,8 @@ jobs:
             COVERAGE_STATUS: ${COVERAGE_STATUS} ${getIconByStatus(COVERAGE_STATUS)}
 
             ## Linter
-            
             Linter Errors Counts: ${lint_count} ${getIconByCondition(lint_count==0)}
-
+            
             <details>
             <summary> Summary </summary>
             
