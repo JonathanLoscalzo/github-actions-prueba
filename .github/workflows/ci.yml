@@ -144,14 +144,14 @@ jobs:
             # CI Report: 
             ![example workflow](https://github.com/JonathanLoscalzo/github-actions-prueba/actions/workflows/ci.yml/badge.svg?branch=${BRANCH})
 
-            LINTER_STATUS: ${LINTER_STATUS} ${getIcon(LINTER_STATUS)} 
-            TESTS_STATUS: ${TESTS_STATUS} ${getIcon(TESTS_STATUS)}
-            COVERAGE_PYTEST_STATUS: ${COVERAGE_PYTEST_STATUS} ${getIcon(COVERAGE_PYTEST_STATUS)}
-            COVERAGE_STATUS: ${COVERAGE_STATUS} ${getIcon(COVERAGE_STATUS)}
+            LINTER_STATUS: ${LINTER_STATUS} ${getIconByStatus(LINTER_STATUS)} 
+            TESTS_STATUS: ${TESTS_STATUS} ${getIconByStatus(TESTS_STATUS)}
+            COVERAGE_PYTEST_STATUS: ${COVERAGE_PYTEST_STATUS} ${getIconByStatus(COVERAGE_PYTEST_STATUS)}
+            COVERAGE_STATUS: ${COVERAGE_STATUS} ${getIconByStatus(COVERAGE_STATUS)}
 
             ## Linter
             Linter Errors Counts: ${lint_count}${getIconByCondition(lint_count>0)}
-            
+
             <details>
             <summary> Summary </summary>
             
