@@ -103,7 +103,7 @@ jobs:
           TESTS_STATUS: ${{ steps.tests.outcome }}
           COVERAGE_PYTEST_STATUS: ${{ steps.coverage_pytest.outcome }}
           COVERAGE_STATUS: ${{ steps.coverage.outcome }}
-          FAIL_UNDER: ${{ $FAIL_UNDER }}
+          FAIL_UNDER: ${{ env.FAIL_UNDER }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
