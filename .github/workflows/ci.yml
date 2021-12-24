@@ -50,7 +50,8 @@ jobs:
       - name: Test with pytest
         id: tests
         run: | 
-          pytest || true
+          # pytest || true
+          pytest
         continue-on-error: true
 
       - name: Coverage with pytest-cov
@@ -65,10 +66,14 @@ jobs:
           coverage run --source=app -m pytest || true
           # --fail-under=80 
           coverage report --skip-covered --fail-under=$FAIL_UNDER > coverage.txt
-          coverage-badge > coverage.svg
+          #coverage-badge > coverage.svg
           coverage json
         continue-on-error: true
 
+      - name: Generage Coverage JSON
+        id: coverage_json
+        run:  | 
+          coverage json
       # - name: Archive code coverage results
       #   uses: actions/upload-artifact@v2
       #   with:
