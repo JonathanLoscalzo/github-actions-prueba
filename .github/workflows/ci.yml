@@ -119,6 +119,7 @@ jobs:
               TESTS_STATUS,
               COVERAGE_PYTEST_STATUS,
               COVERAGE_STATUS,
+              FAIL_UNDER
             } = process.env;
             const fs = require('fs')
             const data = fs.readFileSync('coverage.txt', 'utf8')
