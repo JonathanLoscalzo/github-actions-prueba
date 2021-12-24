@@ -128,6 +128,14 @@ jobs:
             const pytest = fs.readFileSync('coverage-pytest.txt', 'utf8')
             const coverage = JSON.parse(fs.readFileSync('coverage.json', 'utf8'))
 
+            function getIconByStatus(status) {
+              return getIconByCondition(status == 'success')
+            }
+
+            function getIconByCondition(cond) {
+              return cond ? ":heavy_check_mark:" : ":x:"
+            }
+
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -136,13 +144,13 @@ jobs:
             # CI Report: 
             ![example workflow](https://github.com/JonathanLoscalzo/github-actions-prueba/actions/workflows/ci.yml/badge.svg?branch=${BRANCH})
 
-            LINTER_STATUS: ${LINTER_STATUS}
-            TESTS_STATUS: ${TESTS_STATUS}
-            COVERAGE_PYTEST_STATUS: ${COVERAGE_PYTEST_STATUS}
-            COVERAGE_STATUS: ${COVERAGE_STATUS}
+            LINTER_STATUS: ${LINTER_STATUS} ${getIcon(LINTER_STATUS)} 
+            TESTS_STATUS: ${TESTS_STATUS} ${getIcon(TESTS_STATUS)}
+            COVERAGE_PYTEST_STATUS: ${COVERAGE_PYTEST_STATUS} ${getIcon(COVERAGE_PYTEST_STATUS)}
+            COVERAGE_STATUS: ${COVERAGE_STATUS} ${getIcon(COVERAGE_STATUS)}
 
             ## Linter
-            Linter Errors Counts: ${lint_count}${lint_count > 0 ? ":x:" : ""}
+            Linter Errors Counts: ${lint_count}${getIconByCondition(lint_count>0)}
             <details>
             <summary> Summary </summary>
             
@@ -156,7 +164,7 @@ jobs:
             ## Coverage
             ### Summary
             Covered Lines: ${coverage.totals.covered_lines}/${coverage.totals.num_statements} :eyes:
-            Percentage Covered: ${coverage.totals.percent_covered} %${coverage.totals.percent_covered < FAIL_UNDER ? ":x:" : ""} 
+            Percentage Covered: ${coverage.totals.percent_covered} % ${getIconByCondition(coverage.totals.percent_covered < FAIL_UNDER)} 
             ### Coverage lib
             
             <details>
