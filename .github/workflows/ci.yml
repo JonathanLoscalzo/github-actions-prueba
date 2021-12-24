@@ -17,6 +17,8 @@ jobs:
     strategy:
       matrix:
         python-version: [3.9]
+    env:
+      FAIL_UNDER: 60
     steps:
       - name: Event Name
         run: echo ${{github.event_name }}
@@ -33,19 +35,28 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       
       - name: Lint with flake8
+        id: linter
         run: |
           # stop the build if there are Python syntax errors or undefined names
           #flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           # flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 > lint.txt
-          cat lint.txt | tail -n1 > lint-count.txt
-      
+          flake8 . --count --max-complexity=10 --max-line-length=127 > lint.txt
+        continue-on-error: true
+
+      - name: Get linting errors count
+        run: cat lint.txt | tail -n1 > lint-count.txt
+
       - name: Test with pytest
         id: tests
         run: | 
           pytest || true
-          pytest --cov-report term-missing --cov=app tests/ > coverage-pytest.txt
+        continue-on-error: true
+
+      - name: Coverage with pytest-cov
+        id: coverage_pytest
+        run: | 
+          pytest --cov-report term-missing --cov=app tests/ --cov-fail-under=$FAIL_UNDER > coverage-pytest.txt
         continue-on-error: true
 
       - name: Coverage
@@ -53,7 +64,7 @@ jobs:
         run:  | 
           coverage run --source=app -m pytest || true
           # --fail-under=80 
-          coverage report --skip-covered > coverage.txt
+          coverage report --skip-covered --fail-under=$FAIL_UNDER > coverage.txt
           coverage-badge > coverage.svg
           coverage json
         continue-on-error: true
@@ -88,12 +99,22 @@ jobs:
         env: 
           PR: ${{ steps.findPr.outputs.pr }}
           BRANCH: ${{ github.head_ref }}
-          FAILED: ${{ steps.tests.outcome }}
+          LINTER_STATUS: ${{ steps.linter.outcome }} 
+          TESTS_STATUS: ${{ steps.tests.outcome }}
+          COVERAGE_PYTEST_STATUS: ${{ steps.coverage_pytest.outcome }}
+          COVERAGE_STATUS: ${{ steps.coverage.outcome }}
+          FAIL_UNDER: ${{ $FAIL_UNDER }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
 
-            const {PR, BRANCH, FAILED} = process.env;
+            const {
+              PR, BRANCH, 
+              LINTER_STATUS,
+              TESTS_STATUS,
+              COVERAGE_PYTEST_STATUS,
+              COVERAGE_STATUS,
+            } = process.env;
             const fs = require('fs')
             const data = fs.readFileSync('coverage.txt', 'utf8')
             const lint = fs.readFileSync('lint.txt', 'utf8')
@@ -109,10 +130,13 @@ jobs:
             # CI Report: 
             ![example workflow](https://github.com/JonathanLoscalzo/github-actions-prueba/actions/workflows/ci.yml/badge.svg?branch=${BRANCH})
 
-            Status: ${FAILED}
+            LINTER_STATUS: ${LINTER_STATUS}
+            TESTS_STATUS: ${TESTS_STATUS}
+            COVERAGE_PYTEST_STATUS: ${COVERAGE_PYTEST_STATUS}
+            COVERAGE_STATUS: ${COVERAGE_STATUS}
 
             ## Linter
-            Linter errors: ${lint_count}
+            Linter Errors Counts: ${lint_count} ${lint_count > 0 ? ":x:" : ""}
             <details>
             <summary> Summary </summary>
             
@@ -126,7 +150,7 @@ jobs:
             ## Coverage
             ### Summary
             Covered Lines: ${coverage.totals.covered_lines}/${coverage.totals.num_statements} :eyes:
-            Percentage Covered: ${coverage.totals.percent_covered} % :exclamation: 
+            Percentage Covered: ${coverage.totals.percent_covered} % ${coverage.totals.percent_covered < FAIL_UNDER ? "::" : ""} 
             ### Coverage lib
             
             <details>
