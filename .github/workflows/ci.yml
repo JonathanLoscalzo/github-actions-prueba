@@ -1,5 +1,5 @@
 
-name: Tests
+name: Tests on PR
 
 on:
   # push:
@@ -9,6 +9,7 @@ on:
   pull_request:
     branches: 
     - main
+    - dev
 
 jobs:
   test:
