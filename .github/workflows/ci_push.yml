@@ -28,7 +28,7 @@ jobs:
   #       run: echo "::set-output name=isPr::${{steps.findPr.outputs.number}}"
   test:
     # if: ${{ needs.check.isPr != ''}} #${{ github.event_name == 'pull_request'}}
-    if: ${{ github.event_name == 'pull_request'}}
+    if: ${{ github.event_name != 'pull_request'}}
     runs-on: ubuntu-latest
     strategy:
       matrix:
